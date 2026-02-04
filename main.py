@@ -22,7 +22,7 @@ app = FastAPI(
     description="Generate ATS-friendly DOCX and PDF documents from text/markdown content. Designed for GPT Actions.",
     version="1.0.0",
     servers=[
-        {"url": "https://your-app-name.onrender.com", "description": "Production server"}
+        {"url": "https://docx-export-api.onrender.com", "description": "Production server"}
     ]
 )
 
