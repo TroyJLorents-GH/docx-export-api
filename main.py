@@ -231,6 +231,35 @@ async def root():
     }
 
 
+@app.get("/privacy", response_class=Response)
+async def privacy_policy():
+    """Privacy policy for GPT Actions"""
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head><title>Privacy Policy - Document Export API</title></head>
+    <body style="font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px;">
+        <h1>Privacy Policy</h1>
+        <p><strong>Last updated:</strong> February 2025</p>
+
+        <h2>What we collect</h2>
+        <p>This API processes document content (resume/cover letter text) that you submit to generate DOCX files.
+        We do not store, log, or retain any of your submitted content after the document is generated and returned.</p>
+
+        <h2>How we use your data</h2>
+        <p>Your content is used solely to generate the requested document. No data is saved to any database or file system.</p>
+
+        <h2>Third parties</h2>
+        <p>We do not share any data with third parties.</p>
+
+        <h2>Contact</h2>
+        <p>For questions, contact the API administrator.</p>
+    </body>
+    </html>
+    """
+    return Response(content=html, media_type="text/html")
+
+
 @app.post("/export/docx", response_model=ExportResponse, responses={
     200: {
         "description": "Successfully generated DOCX",
