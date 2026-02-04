@@ -1,0 +1,114 @@
+openapi: 3.1.0
+info:
+  title: Document Export API
+  description: Generate ATS-friendly DOCX documents from text/markdown content. Returns base64-encoded files for download.
+  version: 1.0.0
+
+servers:
+  - url: https://YOUR-APP-NAME.onrender.com
+    description: Production server (replace with your actual URL)
+
+paths:
+  /export/docx:
+    post:
+      operationId: exportDocx
+      summary: Generate DOCX Document
+      description: |
+        Creates an ATS-friendly Word document from the provided content.
+        Returns a base64-encoded DOCX file that can be decoded and offered as a download.
+
+        Supports both structured sections and raw markdown content.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doc_type:
+                  type: string
+                  enum: [resume, cover_letter]
+                  default: resume
+                  description: Type of document
+                file_name:
+                  type: string
+                  description: Output filename without extension
+                  example: john_doe_resume
+                title:
+                  type: string
+                  description: Document title (applicant name)
+                  example: John Doe
+                subtitle:
+                  type: string
+                  description: Contact info or subtitle
+                  example: "john@email.com | (555) 123-4567 | linkedin.com/in/johndoe"
+                sections:
+                  type: array
+                  description: Structured document sections (recommended)
+                  items:
+                    type: object
+                    properties:
+                      heading:
+                        type: string
+                        description: Section heading
+                        example: Experience
+                      content:
+                        type: string
+                        description: Section content with markdown support
+                        example: "**Software Engineer** at TechCorp\n- Built APIs\n- Led team"
+                    required:
+                      - content
+                content:
+                  type: string
+                  description: Raw text/markdown content (alternative to sections)
+                return_format:
+                  type: string
+                  enum: [base64, binary]
+                  default: base64
+                  description: Always use base64 for GPT Actions
+              required: []
+      responses:
+        '200':
+          description: Document generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file_name:
+                    type: string
+                    description: Generated filename
+                    example: john_doe_resume.docx
+                  file_base64:
+                    type: string
+                    description: Base64-encoded DOCX file content
+                  mime_type:
+                    type: string
+                    description: File MIME type
+                    example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          description: Invalid request
+        '500':
+          description: Server error
+
+  /:
+    get:
+      operationId: healthCheck
+      summary: Health Check
+      description: Check if the API is running
+      responses:
+        '200':
+          description: API is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  message:
+                    type: string
