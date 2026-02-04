@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://YOUR-APP-NAME.onrender.com
+  - url: https://docx-export-api.onrender.com
     description: Production server (replace with your actual URL)
 
 paths:
